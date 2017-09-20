@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PaymentsServicesTest {
 
-    private static final String BASE_PAGE = "http://www.tinkoff.ru";
+    private static final String BASE_PAGE = "https://www.tinkoff.ru";
     private static final String PAYMENTS_PAGE = BASE_PAGE + "/payments/";
     private static final String SERVICE_PROVIDER_PAGE = BASE_PAGE + "/zhku-moskva/";
 
