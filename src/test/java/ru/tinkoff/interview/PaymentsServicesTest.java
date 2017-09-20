@@ -182,7 +182,7 @@ public class PaymentsServicesTest {
         driver.findElement(By.xpath("//span[.='г. Санкт-Петербург']")).click();
 
         /*
-         * 14. Убедится, что в списке поставщиков на странице выбора поставщиков услуг отсутствует искомый.
+         * 14. Убедиться, что в списке поставщиков на странице выбора поставщиков услуг отсутствует искомый.
          */
         try {
             driver.findElement(By.xpath("//span[contains(text(),'" + serviceProviderName + "')]"));
