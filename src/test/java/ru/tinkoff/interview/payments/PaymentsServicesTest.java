@@ -103,7 +103,7 @@ public class PaymentsServicesTest extends AbstractAutomationTest {
         driver.findElement(By.xpath("//label[*='За какой период оплачиваете коммунальные услуги']")).sendKeys("122020");
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         driver.findElement(By.xpath("//label[*='Код плательщика за ЖКУ в Москве']")).click();
-//        driver.findElement(By.xpath("//div[*='За какой период оплачиваете коммунальные услуги']/*[@value='12.2020']")).isDisplayed(); // TODO url check does not work stable 
+//        driver.findElement(By.xpath("//div[*='За какой период оплачиваете коммунальные услуги']/*[@value='12.2020']")).isDisplayed(); // TODO undesirable behavior detected
         driver.findElement(By.xpath("//div[*='За какой период оплачиваете коммунальные услуги']/*[@value='12.2000']")).isDisplayed();
 
         // заполнение суммы перевода меньше минимума
