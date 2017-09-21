@@ -1,42 +1,35 @@
-package ru.tinkoff.interview;
+package ru.tinkoff.interview.payments;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import ru.tinkoff.interview.AbstractAutomationTest;
+import ru.tinkoff.interview.infrastructure.Constant;
+import ru.tinkoff.interview.infrastructure.Util;
 
 import java.util.concurrent.TimeUnit;
 
-public class PaymentsServicesTest {
+public class PaymentsServicesTest extends AbstractAutomationTest {
 
-    private static final String BASE_PAGE = "https://www.tinkoff.ru";
-    private static final String PAYMENTS_PAGE = BASE_PAGE + "/payments/";
-    private static final String SERVICE_PROVIDER_PAGE = BASE_PAGE + "/zhku-moskva/";
-
-    @Test
-    public void utilitiesProvidersPageLogicTest() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
+    @Test(invocationTimeOut = Constant.Common.TEST_TIMEOUT_MS)
+    public void utilitiesProvidersLogicTest() {
 
         /*
          * 1. Переходом по адресу https://www.tinkoff.ru/ загрузить стартовую страницу Tinkoff Bank.
          */
-        driver.get(BASE_PAGE);
+        driver.get(Constant.Url.START_PAGE);
 
         /*
          * 2. Из верхнего меню, нажатием на пункт меню “Платежи“, перейти на страницу “Платежи“.
          */
         driver.findElement(By.xpath("//ul[@id=\"mainMenu\"]//a[@href='/payments/']")).click();
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        Assert.assertEquals(driver.getCurrentUrl(), PAYMENTS_PAGE);
+        Assert.assertEquals(driver.getCurrentUrl(), Constant.Url.PAYMENTS_PAGE);
 
         /*
          * 3. В списке категорий платежей, нажатием на пункт “Коммунальные платежи“, перейти на страницу выбора поставщиков услуг.
@@ -55,11 +48,7 @@ public class PaymentsServicesTest {
          * 5. Со страницы выбора поставщиков услуг, выбрать 1-ый из списка (Должен быть “ЖКУ-Москва”). Сохранить его наименование
          * (далее “искомый”) и нажатием на соответствующий элемент перейти на страницу оплаты “ЖКУ-Москва“.
          */
-        try {
-            hover(driver);
-        } catch (StaleElementReferenceException e) {
-            hover(driver);
-        }
+        Util.staleSafeInvocation(() -> new Actions(driver).moveToElement(driver.findElement(By.xpath("//ul[contains(@class,'ui-menu')]/descendant::li[1]"))).build().perform());
 
         String serviceProviderName = (new WebDriverWait(driver, 10))
                 .until(ExpectedConditions.presenceOfElementLocated(
@@ -71,7 +60,7 @@ public class PaymentsServicesTest {
          * 6. На странице оплаты, перейти на вкладку “Оплатить ЖКУ в Москве“.
          */
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-//        Assert.assertEquals(driver.getCurrentUrl(), SERVICE_PROVIDER_PAGE); // TODO url check does not work stable
+//        Assert.assertEquals(driver.getCurrentUrl(), Constant.Url.SERVICE_PROVIDER_PAGE); // TODO url check does not work stable
         driver.findElement(By.xpath("//span[.='Оплатить ЖКУ в Москве']")).click();
 
         /*
@@ -148,7 +137,7 @@ public class PaymentsServicesTest {
          */
         driver.findElement(By.xpath("//ul[@id=\"mainMenu\"]//a[@href='/payments/']")).click();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        Assert.assertEquals(driver.getCurrentUrl(), PAYMENTS_PAGE);
+        Assert.assertEquals(driver.getCurrentUrl(), Constant.Url.PAYMENTS_PAGE);
 
         /*
          * 9. В строке быстрого поиска поставщика услуг ввести наименование искомого (ранее сохраненного).
@@ -167,7 +156,7 @@ public class PaymentsServicesTest {
          */
         driver.findElement(By.xpath("//div[.='ЖКУ-Москва']/../../../../div[1]")).click();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//        Assert.assertEquals(driver.getCurrentUrl(), SERVICE_PROVIDER_PAGE); // TODO url check does not work stable 
+//        Assert.assertEquals(driver.getCurrentUrl(), Constant.Url.SERVICE_PROVIDER_PAGE); // TODO url check does not work stable
 
         /*
          * 12. Выполнить шаги (2) и (3).
@@ -190,11 +179,5 @@ public class PaymentsServicesTest {
         } catch (NoSuchElementException e) {
             // expected
         }
-
-        driver.quit();
-    }
-
-    private void hover(WebDriver driver) {
-        new Actions(driver).moveToElement(driver.findElement(By.xpath("//ul[contains(@class,'ui-menu')]/descendant::li[1]"))).build().perform();
     }
 }
