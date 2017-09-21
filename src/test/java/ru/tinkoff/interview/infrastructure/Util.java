@@ -20,11 +20,11 @@ public class Util {
     }
 
     /**
-     * Used when standart `driver.clear()` method does not work (e.g for Chrome driver)
+     * Used when standard `driver.clear()` method does not work (e.g for Chrome driver)
      * @param driver
      * @param xpath
      */
-    public static void deleteInputText(WebDriver driver, String xpath) {
+    public static void deleteTextFromInput(WebDriver driver, String xpath) {
         int textLength = driver.findElement(By.xpath(xpath)).getAttribute("value").length();
         while (textLength > 0) {
             driver.findElement(By.xpath(xpath)).sendKeys(Keys.DELETE);

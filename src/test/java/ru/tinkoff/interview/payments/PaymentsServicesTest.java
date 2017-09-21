@@ -122,7 +122,7 @@ public class PaymentsServicesTest extends AbstractAutomationTest {
         // заполнение суммы перевода
         driver.findElement(By.xpath("//b[contains(text(),'Сумма платежа')]/..")).click();
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        Util.deleteInputText(driver, "//b[contains(text(),'Сумма платежа')]/../input");
+        Util.deleteTextFromInput(driver, "//b[contains(text(),'Сумма платежа')]/../input");
         driver.findElement(By.xpath("//b[contains(text(),'Сумма платежа')]/../..")).sendKeys(Keys.DELETE);
         driver.findElement(By.xpath("//b[contains(text(),'Сумма платежа')]/../..")).sendKeys("14999");
         driver.findElement(By.xpath("//label[*='Код плательщика за ЖКУ в Москве']")).click();
